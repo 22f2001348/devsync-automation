@@ -1,0 +1,25 @@
+name: Daily Repository Update
+
+on:
+  schedule:
+    # Runs at 02:00 UTC every day
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+jobs:
+  daily-update:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Configure Git user for 22f2001348@ds.study.iitm.ac.in
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Create empty commit
+        run: git commit --allow-empty -m "Automated daily update"
+
+      - name: Push commit
+        run: git push
